@@ -5,12 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import MemberForm, LoginForm
+from .forms import MemberForm, LoginForm ,BookingForm
 from SafariLinkApp.models import BusesAvailable, Member, Notifications, MpesaTransaction
 from .daraja import mpesa_payment
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import BusesAvailable
+
+from django.utils.timezone import now
+from datetime import timedelta
 
 def safariLinkApp(request):
   template = loader.get_template('index.html')
@@ -196,3 +202,73 @@ def callback_view(request):
 
 def AboutUs_view(request):
     return render(request,'aboutUs.html')
+
+
+
+# Edit Booking View
+def edit_booking(request, bus_id):
+    bus = get_object_or_404(BusesAvailable, id=bus_id)
+
+    # Restrict editing if time until departure is less than 1 hour
+    if (bus.BusDepartureDate - now()).total_seconds() < 3600:
+        return render(request, 'not_allowed.html',
+                      {'message': "Cannot edit this booking as it's less than an hour to departure."})
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST, instance=bus)
+        if form.is_valid():
+            form.save()
+            return redirect('receipt')  # Redirect to receipt page
+    else:
+        form = BookingForm(instance=bus)
+
+    return render(request, 'edit_booking.html', {'form': form})
+
+
+# Delete Booking View
+def delete_booking(request, bus_id):
+    bus = get_object_or_404(BusesAvailable, id=bus_id)
+
+    # Restrict deletion if time until departure is less than 1 hour
+    if (bus.BusDepartureDate- now()).total_seconds() < 3600:
+        return render(request, 'not_allowed.html',
+                      {'message': "Cannot delete this booking as it's less than an hour to departure."})
+
+    if request.method == 'POST':
+        bus.delete()
+        return redirect('receipt')  # Redirect to receipt page after deletion
+
+    return render(request, 'delete_confirmation.html', {'bus': bus})
+
+
+
+def process_booking(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        vehicle_name = request.POST.get('vehicle')
+        quantity = int(request.POST.get('quantity', 0))
+        user_calculated_amount = float(request.POST.get('calculated_amount', 0))
+
+        # Get the selected vehicle and its price
+        try:
+            vehicle = BusesAvailable.objects.get(BusName=vehicle_name)
+            price_per_seat = vehicle.Amount
+        except BusesAvailable.DoesNotExist:
+            return JsonResponse({'error': 'Invalid vehicle selected'}, status=400)
+
+        # Calculate the correct total
+        correct_total = price_per_seat * quantity
+
+        # Validate the total amount
+        if user_calculated_amount != correct_total:
+            return JsonResponse({'error': 'Invalid total amount'}, status=400)
+
+        # Process the booking
+        # Save booking details or process payment
+        return JsonResponse({'success': 'Booking processed successfully'})
+
+    return render(request, 'booking.html', {'all_buses': BusesAvailable.objects.all()})
+
+# def passwordChangeView (request):
+#     form_class = passwordChangeForm
+#     Success_url = reverse_lazy('index')

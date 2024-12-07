@@ -2,6 +2,9 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
+from django.utils.timezone import now
+
+
 class MemberManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         user = self.model(username=username, **extra_fields)
@@ -52,25 +55,36 @@ class Member(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.username}'
+
 class BusesAvailable(models.Model):
     BusName = models.CharField(max_length=100)
     From = models.CharField(max_length=100, null=True, blank=True)
-    BusDestination = models.CharField(max_length=100,null=True, blank=True)
-    BusArrivalTime = models.DateTimeField()
+    BusDestination = models.CharField(max_length=100, null=True, blank=True)
+    BusDepartureDate = models.DateTimeField()
     BusArrivalDate = models.DateTimeField()
     Amount = models.CharField(max_length=100, null=True, blank=True)
     NuberOfSeats = models.CharField(max_length=100, null=True, blank=True)
 
-    def time_until_arrival(self):
-        current_time = timezone.now()
-        time_until_arrival = self.BusArrivalTime - current_time
-        return time_until_arrival
+
+    def time_until_departure(self):
+        """
+        Calculates the time remaining until the bus departs.
+        """
+        current_time = now()
+        time_diff = self.BusDepartureDate - current_time
+        return time_diff if time_diff.total_seconds() > 0 else "Departed"
 
     def is_booking_enabled(self):
-        return self.BusArrivalTime > timezone.now()
-    def __str__(self):
-        return self.BusName
+        """
+        Checks if booking is still allowed (departure time is in the future).
+        """
+        return self.BusDepartureDate > timezone.now()
 
+    def __str__(self):
+        """
+        String representation of the bus.
+        """
+        return f"{self.BusName} - {self.From} to {self.BusDestination}"
 class Notifications(models.Model):
     BusName = models.CharField(max_length=100,null=True, blank=True)
     From = models.CharField(max_length=100, null=True, blank=True)
@@ -81,7 +95,7 @@ class MpesaTransaction(models.Model):
     MerchantRequestID = models.CharField(max_length=50)
     CheckoutRequestID = models.CharField(max_length=50)
     ResultCode = models.CharField(max_length=10)
-    Amount = models.DecimalField(max_digits=10, decimal_places=2)
+    calculated_amount = models.IntegerField()
     MpesaReceiptNumber = models.CharField(max_length=50)
     PhoneNumber = models.CharField(max_length=15)
 

@@ -215,6 +215,65 @@ header .navbar {
   .footers footer{
        background-color: dodgerblue;
    }
+  table {
+            margin-top: 100px;
+            width: 500px;
+            background-color: #006b1b;
+            border: 1px solid blue;
+        }
+        td,th{
+            border: 1px solid blue;
+        }
+        .details {
+            margin-top: 50px;
+            height: 500px;
+            width: 300px;
+            background-color: dimgray;
+            text-align: center;
+            border-radius: 20px;
+            margin-left: 100px;
+            line-height: 10px;
+        }
+        .pay{
+            margin-left: 90%;
+            margin-top: 100px;
 
+        }
+        .map{
+            margin-left: 900px;
+            margin-top: -600px;
+        }
+@media (max-width: 768px) {
+    table {
+            margin-top: 100px;
+            width: 500px;
+            background-color: #006b1b;
+            border: 1px solid blue;
+        }
+        td,th{
+            border: 1px solid blue;
+        }
+        .details {
+            margin-top: 50px;
+            height: 500px;
+            width: 100%;
+            margin-left: -0px;
+            background-color: dimgray;
+            text-align: center;
+            border-radius: 20px;
+            line-height: 10px;
+        }
+        .pay{
+            margin-left: 90%;
+            margin-top: 100px;
+
+        }
+        .map{
+            margin-left: -100px;
+            margin-top: 0px;
+        }
+
+
+}
 }
 

@@ -125,7 +125,7 @@ USE_TZ = True
 # Use this configuration for development
 
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "ui/static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "ui/staticfiles")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -144,24 +144,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),
+#         'PORT': config('DB_PORT', default='', cast=int),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default='', cast=int),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+       
     }
 }
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'safarilink',
-#         'USER': 'kerichfelix',
-#         'PASSWORD': 'kerichfelix',
+#         'USER': 'root',
+#         'PASSWORD': 'willin',
 #         'HOST': 'localhost',  # Set to the appropriate host if not running locally
-#         'PORT': '5432',      # Default PostgreSQL port
+#         'PORT': '3306',      # Default mySQL port
 #     }
 # }

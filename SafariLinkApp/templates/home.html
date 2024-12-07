@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <style>
@@ -71,132 +71,138 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-    <meta charset="UTF-8">
-    <title>Receipt Details</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
-           <link rel="icon" href="{% static 'Images/bus.jpg' %}" type="image/png">
+
+  <meta charset="UTF-8">
+  <title>Receipt Details</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
+         <link rel="icon" href="{% static 'Images/bus.jpg' %}" type="image/png">
 
 </head>
 
 <body style="background-color: #79aec8">
 <nav class="navbar bg-body-tertiary fixed-top" style="height: 100px;">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Safirilink Travellers</a>
-      <form id="searchForm" class="d-flex mt-3" role="search" style="margin-left: 800px">
-    <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success" type="button" onclick="performSearch()">Search</button>
-  </form>
-      <a href="{% url 'notifications' %}" ><img src="{% static 'Images/notification2.png' %}" alt="Notifications" height="30p" width="30px"></a>
+<div class="container-fluid">
+  <a class="navbar-brand" href="#">Safirilink Travellers</a>
+    <form id="searchForm" class="d-flex mt-3" role="search" style="margin-left: 800px">
+  <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-outline-success" type="button" onclick="performSearch()">Search</button>
+</form>
+    <a href="{% url 'notifications' %}" ><img src="{% static 'Images/notification2.png' %}" alt="Notifications" height="30p" width="30px"></a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <span id="close-menu-btn" class="material-symbols-outlined">close</span>
-          <li><a class="nav-link active" aria-current="page" href="{{ '/' }}">Home</a></li>
-          <li><a href="https://www.google.com/maps/place/DEDAN+KIMATHI+UNIVERSITY/@-0.3950126,36.9551816,15.28z/data=!4m10!1m2!2m1!1sdkut!3m6!1s0x1828677a4955ff13:0x7ae4dae9615396a6!8m2!3d-0.3978314!4d36.9609217!15sCgRka3V0WgYiBGRrdXSSAQp1bml2ZXJzaXR5mgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVVJDZG1adVREZEJSUkFC4AEA!16s%2Fm%2F04q3glb?entry=ttu" target="_blank">Location</a></li>
+  <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SAFIRILINK</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+        <span id="close-menu-btn" class="material-symbols-outlined">close</span>
+        <li><a class="nav-link active" aria-current="page" href="{{ '/' }}">Home</a></li>
+        <li><a href="https://www.google.com/maps/place/DEDAN+KIMATHI+UNIVERSITY/@-0.3950126,36.9551816,15.28z/data=!4m10!1m2!2m1!1sdkut!3m6!1s0x1828677a4955ff13:0x7ae4dae9615396a6!8m2!3d-0.3978314!4d36.9609217!15sCgRka3V0WgYiBGRrdXSSAQp1bml2ZXJzaXR5mgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVVJDZG1adVREZEJSUkFC4AEA!16s%2Fm%2F04q3glb?entry=ttu" target="_blank">Location</a></li>
 
-          {% if user.is_authenticated %}
-              <li><a class="nav-link" href="{% url 'notifications' %}">Notifications</a></li>
-          {% else %}
-              <li><a class="nav-link" href="{% url 'login' %}">Notification</a></li>
-          {% endif %}
-          <li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
-          <li><a class="nav-link" href="{% url 'dashboard' %}">Vehicles available</a></li>
-          {% if user.is_authenticated %}
-              <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-          {% else %}
-              <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-          {% endif %}
-        </ul>
-        <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
+        {% if user.is_authenticated %}
+            <li><a class="nav-link" href="{% url 'notifications' %}">Notifications</a></li>
+        {% else %}
+            <li><a class="nav-link" href="{% url 'login' %}">Notification</a></li>
+        {% endif %}
+        <li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
+        <li><a class="nav-link" href="{% url 'dashboard' %}">Vehicles available</a></li>
+        {% if user.is_authenticated %}
+            <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+      <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
 
-      </div>
     </div>
   </div>
+</div>
 </nav>
 {% if user.is_authenticated and user_vehicle %}
 <table border="1" class="table table-striped-columns" style="margin-top: 150px;">
-    <h1>{{ response_data }}</h1>
-    <tr>
-               <th>Bus Number Plate</th>
-                <th>Arrival Time</th>
-                <th>Arrival Date</th>
-                <th>From</th>
-                <th>Destination</th>
-                <th>Time Until Arrival</th>
-                <th>Amount</th>
-                <th>Number Of Seats</th>
+  <h1>{{ response_data }}</h1>
+  <tr>
+             <th>Bus Number Plate</th>
+              <th>Arrival Time</th>
+              <th>Arrival Date</th>
+              <th>From</th>
+              <th>Destination</th>
+              <th>Time Until Departure</th>
+              <th>Amount</th>
+              <th>Number Of Seats</th>
 
-    </tr>
-    {% for bus in buses %}
-        <tr>
-            <td id="busName_{{ bus.id }}">{{ bus.BusName }}</td>
-             <td>{{ bus.BusArrivalTime }}</td>
-              <td>{{ bus.BusArrivalDate }}</td>
-              <td>{{ bus.From }}</td>
-               <td>{{ bus.BusDestination }}</td>
-            <td style="color: blue">
-           {% if bus.is_booking_enabled %}
-            {{ bus.time_until_arrival }}
-           {% else %}
-               <p style="color: red">Time is up! Book Another Bus.</p>
-           {% endif %}
-            </td>
-            <td>{{ bus.Amount }}</td>
-            <td>{{ bus.NuberOfSeats }}</td>
-        </tr>
-    {% endfor %}
+  </tr>
+  {% for bus in buses %}
+      <tr>
+          <td id="busName_{{ bus.id }}">{{ bus.BusName }}</td>
+           <td>{{ bus.BusDepartureDate }}</td>
+            <td>{{ bus.BusArrivalDate }}</td>
+            <td>{{ bus.From }}</td>
+             <td>{{ bus.BusDestination }}</td>
+          <td style="color: blue">
+         {% if bus.is_booking_enabled %}
+          {{ bus.time_until_departure }}
+         {% else %}
+             <p style="color: red">Time is up! Book Another Bus.</p>
+         {% endif %}
+          </td>
+          <td>{{ bus.Amount }}</td>
+          <td>{{ bus.NuberOfSeats }}</td>
+
+          <td>
+                {% if bus.is_booking_enabled and user.is_authenticated %}
+                    <a href="{% url 'edit_booking' bus.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <form action="{% url 'delete_booking' bus.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                {% else %}
+                    <span class="text-muted">Actions not available</span>
+                {% endif %}
+          </td>
+
+
+      </tr>
+  {% endfor %}
 </table>
-    {% endif %}
-  {% if user.is_authenticated and not user_vehicle %}
-        <p style="margin-top: 100px">No booked vehicle found. <a href="{% url 'dashboard' %}">Book a vehicle now!</a></p>
-    {% endif %}
-<br><br>
+  {% endif %}
+{% if user.is_authenticated and not user_vehicle %}
+      <p style="margin-top: 100px">No booked vehicle found. <a href="{% url 'dashboard' %}">Book a vehicle now!</a></p>
+  {% endif %}
 
+<a class="btn btn-success" href="{% url 'book' %}">Pay here</a>
+<a class="btn btn-success" href="{% url 'dashboard' %}">vehicles</a>
 
-<div class="e-citizen">
-    <h2><a href="{% url 'e_citizen' %}">Click Here </a>to pay via E-Citizen and get 10% discount</h2>
-</div>
-
- <button class="pay" style="width: 100px; height: 50px; border-radius: 20px; background-color: olivedrab">
-
-           <a href="{% url 'book' %}">Pay here</a>
-
-              </button>
 <hr>
- {% for message in messages %}
-    <p>{{ message }}</p>
+{% for message in messages %}
+  <p>{{ message }}</p>
 {% endfor %}
-<h1>SAFE JOURNEY</h1>
-<div class="details" id="receiptContent">
-    <h1>Details</h1>
+<h2>SAFE JOURNEY</h2>
+<div class="details" id="receiptContent" style="margin-left: 10%">
+    <h1><u>Details</u></h1>
 
-    {% if user.is_authenticated %}
-        <p><strong>Username:</strong> {{ user.username }}</p><br><br>
-        <p><strong>First Name:</strong> {{ user.fname }}</p><br><br>
-        <p><strong>Last Name:</strong> {{ user.lname }}</p><br><br>
-        <p><strong>Email:</strong> {{ user.email }}</p><br><br>
-        <p><strong>Vehicle Number Plate:</strong> {{ user.vehicle }}</p><br><br>
-        <p><strong>Seats Quantity:</strong><span>{{ user.quantity }}</span></p><br>
-        <p><strong>Amount paid:</strong> {{ user.amount_paid }}</p><br><br>
-        <p><strong>Payment Confirmation:</strong> {{ user.is_paid }}</p><br><br>
-        <p><strong>Seat Number:</strong> {{ user.seatNumber }}</p><br><br>
-        <p><strong>Time:</strong> <span id="currentDateTime"></span></p><br><br>
-        <button onclick="downloadReceipt()">Download Receipt </button>
+  {% if user.is_authenticated %}
+      <p><strong>Username:</strong> {{ user.username }}</p><br><br>
+      <p><strong>First Name:</strong> {{ user.fname }}</p><br><br>
+      <p><strong>Last Name:</strong> {{ user.lname }}</p><br><br>
+      <p><strong>Email:</strong> {{ user.email }}</p><br><br>
+      <p><strong>Vehicle Number Plate:</strong> {{ user.vehicle }}</p><br><br>
+      <p><strong>Seats Quantity:</strong><span>{{ user.quantity }}</span></p><br>
+      <p><strong>Amount paid:</strong> {{ user.amount_paid }}</p><br><br>
+      <p><strong>Payment Confirmation:</strong> {{ user.is_paid }}</p><br><br>
+      <p><strong>Seat Number:</strong> {{ user.seatNumber }}</p><br><br>
+      <p><strong>Time:</strong> <span id="currentDateTime"></span></p><br><br>
+      <button onclick="downloadReceipt()" class="btn btn-danger btn-sm">Download Receipt </button>
 
-    {% else %}
-        <p>Please <a href="{% url 'login' %}">login</a> to view details.</p>
-    {% endif %}
+  {% else %}
+      <p>Please <a href="{% url 'login' %}">login</a> to view details.</p>
+  {% endif %}
 </div>
 <br><br>
-
 <div class="map" style="text-align: center">
     {% for bus in buses %}
         <div style="text-align: center "> {{ bus.BusName }}</div><br>
